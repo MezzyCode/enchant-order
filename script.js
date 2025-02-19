@@ -9,31 +9,31 @@ let languageId;
 let enchants_list;
 
 const languages = {
-    'en'    : 'English',
+    'en': 'English',
 
     // in alphabetical order
-    'de'    : 'Deutsch',
-    'es-ES' : 'Español',
-    'fr-FR' : 'Français',
-    'it-IT' : 'Italiano',
-    'nl'    : 'Nederlands',
-    'pl-PL' : 'Polski',
-    'pt-BR' : 'Português',
-    'tr-TR' : 'Türkçe',
-    'be-BY' : 'Беларуская',
-    'ru-RU' : 'Русский',
-    'ua-UA' : 'Українська',
-    'zh-CN' : '中文',
-    'ja-JP' : '日本語',
-    'vi-VN' : 'Tiếng Việt',
+    'de': 'Deutsch',
+    'es-ES': 'Español',
+    'fr-FR': 'Français',
+    'it-IT': 'Italiano',
+    'nl': 'Nederlands',
+    'pl-PL': 'Polski',
+    'pt-BR': 'Português',
+    'tr-TR': 'Türkçe',
+    'be-BY': 'Беларуская',
+    'ru-RU': 'Русский',
+    'ua-UA': 'Українська',
+    'zh-CN': '中文',
+    'ja-JP': '日本語',
+    'vi-VN': 'Tiếng Việt',
 };
 
 const languages_cache_key = 6;
 
-window.onload = function() {
+window.onload = function () {
 
     worker = new Worker("work.js?6");
-    worker.onmessage = function(event) {
+    worker.onmessage = function (event) {
         if (event.data.msg === "complete") {
             afterFoundOptimalSolution(event.data);
         }
@@ -100,7 +100,7 @@ function incompatibleGroupFromNamespace(enchantment_namespace) {
 function buildEnchantList(item_namespace_chosen) {
     const enchantments_metadata = data.enchants;
 
-    $("#enchants table").html("");
+    $("#enchants #table").html("");
 
     //
     // first, filter out which enchants apply to this item
@@ -169,9 +169,12 @@ function buildEnchantList(item_namespace_chosen) {
             const enchantment_max_level = enchantment_metadata.levelMax;
             const enchantment_name = languageJson.enchants[enchantment_namespace];
 
-            const enchantment_row = $("<tr>");
-            enchantment_row.addClass(group_toggle_color ? "group1" : "group2");
-            enchantment_row.append($("<td>").append(enchantment_name));
+            const enchantment_row = $("<li>");
+            enchantment_row.addClass(["enchant-list", group_toggle_color ? "group1" : "group2"]);
+            enchantment_row.append($("<strong>").append(enchantment_name));
+
+            const enchantment_btn_group = $("<div>");
+            enchantment_btn_group.addClass("list-btn-group");
             for (let enchantment_level = 1; enchantment_level <= enchantment_level_maxmax; enchantment_level++) {
                 if (enchantment_max_level >= enchantment_level) {
                     const enchantment_button_data = {
@@ -184,14 +187,12 @@ function buildEnchantList(item_namespace_chosen) {
                     enchantment_button.addClass("level-button");
                     enchantment_button.data(enchantment_button_data);
 
-                    const enchantment_row_append = $("<td>").append(enchantment_button);
-                    enchantment_row.append(enchantment_row_append);
-                } else {
-                    enchantment_row.append($("<td>"));
+                    // const enchantment_row_append = $("<td>").append(enchantment_button);
+                    enchantment_btn_group.append(enchantment_button);
                 }
             }
-
-            $("#enchants table").append(enchantment_row);
+            enchantment_row.append(enchantment_btn_group)
+            $("#enchants #table").append(enchantment_row);
         });
 
         group_toggle_color = !group_toggle_color;
@@ -231,7 +232,7 @@ function turnOffLevelButtons() {
 }
 
 function buildEnchantmentSelection() {
-    $("select#item").change(function() {
+    $("select#item").change(function () {
         const item_namespace_selected = $("select#item option:selected").val();
         if (item_namespace_selected) {
             buildEnchantList(item_namespace_selected);
@@ -242,7 +243,7 @@ function buildEnchantmentSelection() {
         }
     });
 
-    $("#enchants table").on("click", "button", function() {
+    $("#enchants #table").on("click", "button", function () {
         levelButtonClicked($(this));
     });
 }
@@ -273,19 +274,19 @@ function displayLevelsText(levels) {
 function pluralize(num, key_root) {
 
     if (languageJson.use_russain_plurals) {
-      if ((num % 10 === 1) && (num < 10 || num > 15)) {
-        return String(num) + languageJson[key_root];
-      } else if ((num % 10 === 2 || num % 10 === 3 || num % 10 === 4) && (num < 10 || num > 15)) {
-        return String(num) + languageJson[key_root + '_low'];
-      } else {
-        return String(num) + languageJson[key_root + '_high'];
-      }
+        if ((num % 10 === 1) && (num < 10 || num > 15)) {
+            return String(num) + languageJson[key_root];
+        } else if ((num % 10 === 2 || num % 10 === 3 || num % 10 === 4) && (num < 10 || num > 15)) {
+            return String(num) + languageJson[key_root + '_low'];
+        } else {
+            return String(num) + languageJson[key_root + '_high'];
+        }
     }
 
     if (num === 1) {
-      return String(num) + languageJson[key_root];
+        return String(num) + languageJson[key_root];
     } else {
-      return String(num) + languageJson[key_root + '_s'];
+        return String(num) + languageJson[key_root + '_s'];
     }
 }
 
@@ -360,14 +361,14 @@ function displayItemText(item_obj) {
     if (languageJson.enchants.hasOwnProperty(item_obj.I)) {
         enchantments_obj.push(item_obj.I)
         item_namespace = 'book'
-    } else if (typeof(item_obj.I) === 'string') {
+    } else if (typeof (item_obj.I) === 'string') {
         item_namespace = item_obj.I
     } else {
         item_namespace = languageJson.enchants.hasOwnProperty(item_obj.L.I) ? 'book' : item_obj.L.I;
         enchants = findEnchantments(item_obj)
         enchantments_obj = enchants
     }
-    if (typeof(item_namespace) === 'undefined') {
+    if (typeof (item_namespace) === 'undefined') {
         item_namespace = findItemNamespace(item_obj.L)
     }
     const icon_text = '<img src="./images/' + item_namespace + '.gif" class="icon">';
@@ -583,7 +584,7 @@ function retrieveEnchantmentFoundation() {
     const enchantment_foundation = [];
     const buttons_on = $("#enchants button.on");
 
-    buttons_on.each(function(button_index, button) {
+    buttons_on.each(function (button_index, button) {
         const enchantment_name = $(button).data("enchant");
         const enchantment_level = $(button).data("level");
         const enchantment_namespace = enchantmentNamespaceFromStylized(enchantment_name);
@@ -666,27 +667,27 @@ function startCalculating(item_namespace, enchantment_foundation, mode) {
     $("#progress").show();
 }
 
-function languageChangeListener(){
+function languageChangeListener() {
     const selectLanguage = document.getElementById('language');
-    selectLanguage.addEventListener('change', function() {
+    selectLanguage.addEventListener('change', function () {
         const selectedValue = selectLanguage.value;
         changePageLanguage(selectedValue);
     });
 }
 
-async function setupLanguage(){
-    for (const i in languages){
-        $("<option/>", {'value': i}).text(languages[i]).appendTo('#language');
+async function setupLanguage() {
+    for (const i in languages) {
+        $("<option/>", { 'value': i }).text(languages[i]).appendTo('#language');
     }
     defineBrowserLanguage();
     languageChangeListener();
 }
 
-function defineBrowserLanguage(){
+function defineBrowserLanguage() {
     if (!localStorage.getItem("savedlanguage")) {
         // language isn't saved and has to be detected
         const browserLanguage = navigator.language || navigator.userLanguage;
-        if (languages[browserLanguage]){
+        if (languages[browserLanguage]) {
             changePageLanguage(browserLanguage);
         } else {
             changePageLanguage('en');
@@ -697,15 +698,15 @@ function defineBrowserLanguage(){
     }
 }
 
-async function changePageLanguage(language){
-    if (!languages[language]){
+async function changePageLanguage(language) {
+    if (!languages[language]) {
         console.error("Trying to switch to unknown language:", language);
         return;
     }
 
     languageId = language;
-    languageJson = await loadJsonLanguage(language).then(languageData => { return languageData});
-    if (languageJson){
+    languageJson = await loadJsonLanguage(language).then(languageData => { return languageData });
+    if (languageJson) {
         changeLanguageByJson(languageJson);
         localStorage.setItem("savedlanguage", language);
         // ^ Save language choice to localstorage
@@ -713,45 +714,47 @@ async function changePageLanguage(language){
 }
 
 function loadJsonLanguage(language) {
-    return fetch('languages/'+language+'.json?'+languages_cache_key)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Can\'t load language file');
-        }
-        return response.json();
-      })
-      .then(data => {
-        return data;
-      })
-      .catch(error => {
-        console.error('Language file error:', error);
-        return null;
-      });
+    return fetch('languages/' + language + '.json?' + languages_cache_key)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Can\'t load language file');
+            }
+            return response.json();
+        })
+        .then(data => {
+            return data;
+        })
+        .catch(error => {
+            console.error('Language file error:', error);
+            return null;
+        });
 }
 
 
-function changeLanguageByJson(languageJson){
+function changeLanguageByJson(languageJson) {
     /* check for duplicate names */
     const map = {};
-    for (let i in languageJson.enchants){
-        if (map[languageJson.enchants[i]]){
+    for (let i in languageJson.enchants) {
+        if (map[languageJson.enchants[i]]) {
             console.error("Duplicate string for enchant names (must be unique)", languageId, i, map[languageJson.enchants[i]]);
         }
         map[languageJson.enchants[i]] = i;
     }
 
-    const h1Element = document.getElementsByTagName('h1')[0];
+    const mainSect = document.getElementById('mainSect');
+    const h1Element = mainSect.querySelector('h1');
     h1Element.textContent = languageJson.h1_title;
 
     /* paragraphs */
-    const paragraphs = document.getElementsByTagName('p');
-    paragraphs[1].innerHTML = languageJson.paragraph_1;
-    paragraphs[2].innerHTML = languageJson.paragraph_2;
-    paragraphs[3].innerHTML = languageJson.paragraph_3;
+    const paragraphs = mainSect.querySelectorAll('p');
+    paragraphs[0].innerHTML = languageJson.paragraph_1;
+    paragraphs[1].innerHTML = languageJson.paragraph_2;
+    paragraphs[2].innerHTML = languageJson.paragraph_3;
 
 
     /* selection */
     const options = document.getElementById("item").getElementsByTagName("option");
+
     let i = 1;
 
     options[0].textContent = languageJson.choose_an_item_to_enchant;

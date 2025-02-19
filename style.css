@@ -1,309 +1,322 @@
+:root {
+  --theme-light: #e3e4eb;
+  --theme-dark: #2b2f39;
+  --theme-crimson: #331320;
+  --chevron: url("images/lucide--chevron-down.svg");
+  --bs-d1: 1px 2px 5px 0px rgba(0, 0, 0, 0.3);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
-    font-family: arial, serif;
-    position: relative;
-    background-color: #e3e4eb;
+  font-family: arial, serif;
+  position: relative;
+  margin: 1rem;
 }
 
-/* Theme styles */
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
 
-#theme-switcher-form div:nth-child(1) label {
-  background-color: #eee;
-}
-#theme-switcher-form div:nth-child(2) label {
-  background-color: #353535;
-}
-#theme-switcher-form div:nth-child(3) label {
-  background-color: #813151;
-}
 /* Remember these for every theme ;) */
 
 html[data-theme="light"] {
-  --bg-primary: #e3e4eb;
-  --bg-secondary: white;
-  --fg-primary: #2b2b2b;
-  --fg-secondary: #474747;
-  --link-primary: #2140ba;
-  --link-hover: #2c54ce;
-  --table-text: #191715;
-  --table-group1: #EEE;
-  --table-group2: #DDD;
-  --echlevel-color: var(--link-primary);
-  --echlevel-bg: white;
-  --echlevel-shadow: #888;
-  --enchantment-results: #cfc;
-  --progress-color: #ffc;
-  --error: #f99;
-  --phone-warn: #fa9;
-  --solution: #cfc;
+  --bg-primary: #ffffff;
+  --fg-primary: #2b2f39;
+  --bg-secondary: #f5f5f5;
+  --fg-secondary: #4a4a4a;
+  --link-primary: #1a73e8;
+  --link-hover: #1557b0;
+  --progress-color: #f1a32f;
+  --error: #d93025;
+  --phone-warn: #e7cc03;
+  --bg-sol: #03ad5f;
+  --fg-sol: #03ad5f;
+  --bg-g1: #e0e0e0;
+  --bg-g2: #f0f0f0;
+  --fg-gx: #2b2f39;
 }
 
 html[data-theme="dark"] {
-  --bg-primary: #333;
-  --bg-secondary: #222;
-  --fg-primary: white;
-  --fg-secondary: #eee;
-  --link-primary: #66b3ff;
-  --link-hover: #4d8ac3;
-  --table-text: #333;
-  --table-group1: #CCC;
-  --table-group2: #BBB;
-  --echlevel-color: var(--link-primary);
-  --echlevel-bg: white;
-  --echlevel-shadow: #888;
-  --enchantment-results: #0E754D;
+  --bg-primary: var(--theme-dark);
+  --fg-primary: #e6e6e6;
+  --bg-secondary: #1c202b;
+  --fg-secondary: #bababb;
+  --link-primary: #88a3e8;
+  --link-hover: #6580c4;
   --progress-color: #f1a32f;
   --error: #f90601;
   --phone-warn: #e7cc03;
-  --solution: #03ad5f;
+  --bg-sol: #03ad5f;
+  --fg-sol: #03ad5f;
+
+  --bg-g1: #2f2f2f;
+  --bg-g2: #3f3f3f;
+  --fg-gx: #d0d0d0;
 }
 
 html[data-theme="crimson"] {
-  --bg-primary: #331320;
-  --bg-secondary: #4d1d31;
-  --fg-primary: white;
-  --fg-secondary: #eee;
-  --link-primary: #66b3ff;
-  --link-hover: #4d8ac3;
-  --table-text: #DDD;
-  --table-group1: #813151;
-  --table-group2: #672741;
-  --echlevel-color: var(--table-text);
-  --echlevel-bg: var(--table-group1);
-  --echlevel-shadow: var(--table-group2);
-  --enchantment-results: #006666;
-  --progress-color: #f1a32f;
-  --error: #f90601;
-  --phone-warn: #e7cc03;
-  --solution: var(--enchantment-results);
+  --bg-primary: #3a1a1f;
+  --fg-primary: #f2f2f2;
+  --bg-secondary: #2d0d12;
+  --fg-secondary: #e0b8b8;
+  --link-primary: #f45d6f;
+  --link-hover: #f03342;
+  --progress-color: #e23b16;
+  --error: #e4052b;
+  --phone-warn: #c2a400;
+  --bg-sol: #6a1200;
+  --fg-sol: #f44336;
+  --bg-g1: #5c2129;
+  --bg-g2: #70212f;
+  --fg-gx: #d4b4b4;
 }
 
 /* TODO: fix enchantment results variable name, misnomer */
+/* [CT] Control Section */
+#ctrlSect {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
 
-.selectItem:focus, .selectLanguage:focus {
+div[aria-labelledby="Enchanting Control"] {
+  display: flex;
+  width: 100%;
+  max-width: 450px;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mode-overrides {
+  display: flex;
+  flex-direction: column;
+}
+
+.mode-select {
+  >div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.selectItem:focus,
+.selectLanguage:focus {
   outline: none
 }
 
 body {
-    background-color: var(--bg-primary);
-    color: var(--fg-primary);
+  background-color: var(--bg-primary);
+  color: var(--fg-primary);
 }
 
-body h1, body h2 {
-    color: var(--fg-primary);
-}
-
-.selectItem {
-    appearance: none;
-    font-size: 14px;
-    border: 1px solid var(--table-group2);
-    background-color: var(--table-group1);
-    color: var(--table-text);
-    background-image: url("images/down.png");
-    background-repeat: no-repeat;
-    background-position: right 6px center;
-    background-size: 12px 12px;
-    padding: 8px 24px 8px 12px;
-    border-radius: 3px;
+.selectItem,
+.selectLanguage {
+  appearance: none;
+  font-size: 14px;
+  border: 1px solid var(--bg-g2);
+  background-color: var(--bg-g1);
+  color: var(--fg-gx);
+  background-image: var(--chevron);
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 12px 12px;
+  padding: 8px 24px 8px 12px;
+  border-radius: 3px;
+  box-shadow: var(--bs-d1);
 }
 
 .inner {
-    margin: 30px auto;
-    width: 1000px;
-    padding-bottom: 30px;
-    overflow: auto;
+  margin: 30px auto;
+  max-width: 1000px;
+  margin-bottom: 70px;
 }
 
 a {
-    color: var(--link-primary);
+  color: var(--link-primary);
 }
 
 a:hover {
   color: var(--link-hover);
 }
 
+/* [ET] Enchantments Table*/
 #enchants {
-    width: 400px;
+  display: none;
 }
 
-#enchants table {
-    border-spacing: 0;
+.enchant-table {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  box-shadow: var(--bs-d1);
 }
 
-#enchants td {
-    padding: 0.5em;
+.enchant-list {
+  display: grid;
+  gap: 1rem;
+  padding: 0.5rem;
+  justify-items: center;
+  color: var(--fg-gx);
 }
 
-#enchants tr.group1 td {
-    color: var(--table-text);
-    background-color: var(--table-group1);
+.group1 {
+  background-color: var(--bg-g1);
+
+  .list-btn-group button {
+    background-color: var(--bg-g2);
+  }
 }
 
-#enchants tr.group2 td {
-    color: var(--table-text);
-    background-color: var(--table-group2);
+.group2 {
+  background-color: var(--bg-g2);
+
+  .list-btn-group button {
+    background-color: var(--bg-g1);
+  }
 }
 
-#enchants td i {
-    font-size: 12px;
+.list-btn-group>button:last-of-type {
+  border-radius: 0 3px 3px 0;
 }
 
-#enchants button {
-    background-color: var(--echlevel-bg);
-    padding: 10px;
-    vertical-align: top;
-    box-shadow: 2px 1px 2px var(--echlevel-shadow);
-    color: var(--echlevel-color);
-    margin: 2px 0px 2px 0px;
+.list-btn-group>button:first-of-type {
+  border-radius: 3px 0 0 3px;
 }
 
-#enchants button.on {
-    box-shadow: 0 0 0 var(--echlevel-shadow);
-    color: var(--echlevel-color);
-    background-color: var(--enchantment-results);
+.list-btn-group button {
+  color: inherit;
+  padding: 0.8rem;
+  /* box-shadow: 2px 1px 2px var(--echlevel-shadow); */
+  border: none;
+}
+
+.list-btn-group button.on {
+  color: var(--bg-primary);
+  background-color: var(--fg-primary);
 }
 
 #calculate {
-    padding: 8px;
-    font-size: 120%;
-}
-
-#left {
-    width: 400px;
-    float: left;
-    margin-right: 50px;
-}
-
-#right {
-    width: 550px;
-    float: left;
+  padding: 0.5rem;
+  font-size: large;
+  background-color: var(--bg-g1);
+  color: var(--fg-gx);
+  border: 1px solid var(--bg-g2);
+  border-radius: 3px;
 }
 
 #progress {
-    margin-top: 40px;
-    line-height: 20px;
-    background-color: var(--progress-color);
-    padding: 20px;
+  margin-top: 40px;
+  line-height: 20px;
+  background-color: var(--progress-color);
+  padding: 20px;
 }
 
 #progress img {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 #error {
-    margin-top: 40px;
-    line-height: 20px;
-    background-color: var(--error);
-    padding: 20px;
+  margin-top: 40px;
+  line-height: 20px;
+  background-color: var(--error);
+  padding: 20px;
 }
 
 #phone-warn {
-    margin-top: 40px;
-    line-height: 20px;
-    background-color: var(--phone-warn);
-    padding: 20px;
+  margin-top: 40px;
+  line-height: 20px;
+  background-color: var(--phone-warn);
+  padding: 20px;
 }
 
 #solution {
-    background-color: var(--solution);
-    padding: 20px;
-    margin-top: 20px;
+  background-color: #234d31;
+  color: #ccecdc;
+  padding: 0.5rem;
+  border-radius: 3px;
+  box-shadow: var(--bs-d1);
 }
 
 #solution h2 {
-    margin-block-start: 0;
+  margin-block-start: 0;
 }
 
 #steps li {
-    margin-bottom: 0.75em;
+  margin-bottom: 0.75em;
 }
 
 .footer {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    background: var(--bg-secondary);
-    padding-right: 20px;
-    box-sizing: border-box;
-    text-align: right;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: var(--bg-secondary);
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+
+  p {
+    margin: 0 0 0.5rem 0;
+  }
 }
 
 .icon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
 }
 
 @media only screen and (max-width: 1000px) {
-    body {
-        padding: 10px;
-    }
+  body {
+    padding: 10px;
+  }
 
-    .inner {
-        width: auto;
-        max-width: 100%;
-        margin-top: 0;
-    }
+  h1 {
+    font-size: 24px;
+  }
 
-    h1 {
-        font-size: 24px;
-    }
+  #left {
+    width: auto;
+    float: none;
+    margin-right: 0;
+  }
 
-    #left {
-        width: auto;
-        float: none;
-        margin-right: 0;
-    }
-
-    #right {
-        width: auto;
-        float: none;
-    }
-
-    #enchants {
-        width: auto;
-    }
+  #right {
+    width: auto;
+    float: none;
+  }
 }
 
 #xp-range-note {
-    margin-top: 2em;
-    font-size: 12px;
+  margin-top: 2em;
+  font-size: 12px;
 }
 
 /* Top container */
-.top-container{
-    float: right;
-    display:flex;
+.top-container {
+  float: right;
+  display: flex;
 }
 
-.selectLanguage {
-    appearance: none;
-    font-size: 14px;
-    border: 1px solid var(--table-group2);
-    background-color: var(--table-group1);
-    color: var(--table-text);
-    background-image: url("images/down.png");
-    background-repeat: no-repeat;
-    background-position: right 6px center;
-    background-size: 13px 12px;
-    margin-top: 6px;
-    margin-left: 15px;
-    padding: 5px 24px 8px 12px;
-    border-radius: 3px;
-}
-
+/* [T] Theme styles */
 #theme-switcher-form {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90px; /* Adjust the width as needed */
-  margin: auto; /* Center form */
-}
-
-#theme-switcher-form div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 90px;
+  /* Adjust the width as needed */
+  margin: auto;
+  /* Center form */
 }
 
 #theme-switcher-form input[type="radio"] {
@@ -314,48 +327,69 @@ a:hover {
 #theme-switcher-form label {
   width: 25px;
   height: 25px;
-  background: #ccc; /* Default background no one's ever going to see */
-  border-radius: 50%;
+  border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-#theme-switcher-form input[type="radio"]:checked + label {
+#theme-switcher-form input[type="radio"]:checked+label {
   outline: 2px solid var(--fg-primary);
 }
 
+label[for="light-theme"] {
+  background-color: var(--theme-light);
+}
 
-@media only screen and (max-width: 422px) {
-  .footer {
-    text-align: center
-  }
-  
-  .footer * {
-    margin-right: auto;
-    margin-left: auto;
-  }
+label[for="dark-theme"] {
+  background-color: var(--theme-dark);
+}
 
-  .dark-mode-toggle-container {
-    margin-top: 12px;
-  }
-} /* smol screens */
+label[for="crimson-theme"] {
+  background-color: var(--theme-crimson);
+}
 
-@media only screen and (min-width: 423px) {
-  .footer {
-    text-align: right
-  }
-
-  .footer * {
-    display: inline-block;
+/* big screens */
+@media (min-width: 350px) {
+  .enchant-list {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: unset;
   }
 
-  .dark-mode-toggle-container {
-    float: left;
-    margin-top: 13px;
-    margin-left: 12px;
+  header {
+    flex-direction: row;
+    justify-content: center;
   }
-  
+
   /*#theme-switcher-form {
     width: 90px;
   }*/
-} /* bigger screens */
+}
+
+@media (min-width: 768px) {
+
+  /* [CT1] Control Section */
+  #ctrlSect {
+    flex-direction: row;
+    align-items: unset;
+    justify-content: space-between;
+  }
+
+  div[aria-labelledby="Enchanting Control"] {
+    width: 45%;
+    max-width: unset;
+  }
+
+  div[aria-labelledby="Result"] {
+    width: 55%;
+  }
+
+  .footer {
+    p {
+      display: inline;
+    }
+  }
+
+}
+
+/* bigger screens */
